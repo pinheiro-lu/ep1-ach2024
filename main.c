@@ -38,26 +38,20 @@ int main()
 
 		char linha[NUM_CARACTERES_LINHA];
 		
-//		printf("cheguei aqui\n");
 		scanf("\n%[^\n]", linha);
 
-//		printf("%s\n", linha);
 		int offset = 0, numCaracteresLidos;
 
 		sscanf(linha, "%[^:]:%n", nomeVertice[i], &numCaracteresLidos);
-//		printf("%s\n", nomeVertice[i]);
 
 		offset += numCaracteresLidos;
 		
 		char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE];
 
-		while(sscanf(linha + offset, " %[^;]%n", nomeVerticeAdjacente, &numCaracteresLidos) == 1) {
+		while(sscanf(linha + offset, " %[^;];%n", nomeVerticeAdjacente, &numCaracteresLidos) == 1) {
 			insere(adj, i, nomeVerticeAdjacente);
 			offset += numCaracteresLidos;
-			if (linha[offset] == ';') offset++; 
-//			printf("%s %d", nomeVerticeAdjacente, numCaracteresLidos);
 		}
-//		puts("");
 
 		printf("%s: ", nomeVertice[i]);
 		Adj* aux = adj[i]->primeiro;
@@ -68,6 +62,8 @@ int main()
 		puts("");
 	}
 
+	int algoritmo;
+	scanf("%d", &algoritmo);
+
     return 0;
 }
-
