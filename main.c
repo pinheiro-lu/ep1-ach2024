@@ -46,13 +46,12 @@ int encontraVertice(Grafo * grafo, char nomeVerticeAdjacente[NUM_CARACTERES_VERT
 	return -1;
 }
 
-void insereLista(Grafo * grafo, int vertice, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
+void insereLista(Lista * adj, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
 	Adj * novo = (Adj *) malloc(sizeof(Adj));
 	novo->nomeVerticeAdjacente = (char *) malloc(sizeof(char)* NUM_CARACTERES_VERTICE);
 	strcpy(novo->nomeVerticeAdjacente, nomeVerticeAdjacente);
-	novo->prox = grafo->adj[vertice]->primeiro;
-	grafo->adj[vertice]->primeiro = novo;
-	grafo->A++;
+	novo->prox = adj->primeiro;
+	adj->primeiro = novo;
 }
 
 void lerLinhaVertice (char linha[NUM_CARACTERES_LINHA], Grafo * grafo, int vertice) {
@@ -68,7 +67,8 @@ void lerLinhaVertice (char linha[NUM_CARACTERES_LINHA], Grafo * grafo, int verti
 	char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE];
 
 	while(sscanf(linha + offset, " %[^;];%n", nomeVerticeAdjacente, &numCaracteresLidos) == 1) {
-		insereLista(grafo, vertice, nomeVerticeAdjacente);
+		insereLista(grafo->adj[vertice], nomeVerticeAdjacente);
+		grafo->A++;
 		offset += numCaracteresLidos;
 	}
 }
@@ -128,6 +128,30 @@ void DFS (Grafo * grafo, int v, int a){
 		if (grafo->cor[i] == BRANCO)
 			DFSvisit(grafo, i);
 	}
+}
+
+void insereListaTransposta(Lista * listaArestas, int indiceAdjacente, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
+	insereLista(listaArestas, nomeVerticeAdjacente);
+	
+	listaArestas->primeiro->vertice = indiceAdjacente;
+}
+
+Lista ** tranposicaoArestas(Grafo * grafo) {
+	Lista ** arestasTranspostas = (Lista **) malloc(sizeof(Lista *) * grafo->V);
+
+	for (int i = 0; i < grafo->V; i++) {
+		arestasTranspostas[i] = (Lista *) malloc(sizeof(Lista));
+	}
+
+	for (int i = 0; i < grafo->V; i++) {	
+		Adj * aux = grafo->adj[i]->primeiro;
+		while (aux) {
+			insereListaTransposta(arestasTranspostas[aux->vertice], i, grafo->nomeVertice[i]);
+			aux = aux->prox;
+		}
+	}
+
+	return arestasTranspostas;
 }
 
 int main()
