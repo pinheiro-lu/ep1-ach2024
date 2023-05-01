@@ -12,7 +12,7 @@
 int cor [MAX_NUM_VERTICES];
 int d[MAX_NUM_VERTICES], f[MAX_NUM_VERTICES];
 int pai[MAX_NUM_VERTICES];
-int isAdjacente[MAX_NUM_VERTICES];
+int isAdjacente[MAX_NUM_VERTICES][MAX_NUM_VERTICES];
 
 typedef struct __adj__ {
 	struct __adj__ * prox;
