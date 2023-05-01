@@ -5,6 +5,10 @@
 #define NUM_CARACTERES_LINHA 1000
 #define NUM_CARACTERES_VERTICE NUM_CARACTERES_LINHA
 
+#define BRANCO 1
+#define CINZA 2
+#define PRETO 3
+
 typedef struct __adj__ {
 	struct __adj__ * prox;
 	char * nomeVerticeAdjacente;
