@@ -105,7 +105,7 @@ void DFSvisit (Grafo * grafo, int u){
 	grafo->cor[u] = CINZA;
 	contador += contador;
 	grafo->d[u] = contador;
-	for (int v = 0; v< grafo->numVertices; v++){
+	for (int v = 0; v< grafo->V; v++){
 		while (grafo->adj[u]->primeiro->vertice != v)
 			grafo->adj[u]->primeiro = grafo->adj[u]->primeiro->prox;
 				if (grafo->cor[v] == BRANCO){
