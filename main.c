@@ -4,7 +4,6 @@
 
 #define NUM_CARACTERES_LINHA 1000
 #define NUM_CARACTERES_VERTICE NUM_CARACTERES_LINHA
-#define MAX_NUM_VERTICES 1000
 
 typedef struct __adj__ {
 	struct __adj__ * prox;
