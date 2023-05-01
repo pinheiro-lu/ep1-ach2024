@@ -20,6 +20,9 @@ typedef struct {
 	Lista ** adj;
 	int V;
 	int A;
+	int cor [numVertices];
+	int d[numVertices], f[numVertices];
+	int pai[numVertices];
 } Grafo;
 
 Lista * inicializaLista() {
