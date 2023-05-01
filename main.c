@@ -20,9 +20,10 @@ typedef struct {
 	Lista ** adj;
 	int V;
 	int A;
-	int cor [numVertices];
-	int d[numVertices], f[numVertices];
-	int pai[numVertices];
+	int * cor;
+	int * d;
+	int * f;
+	int * pai;
 } Grafo;
 
 Lista * inicializaLista() {
@@ -75,6 +76,10 @@ Grafo * inicializaGrafo(int n) {
 	grafo->adj = (Lista **) malloc(sizeof(Lista *) * n);
 	grafo->A = 0;
 	grafo->V = n;
+	grafo->d = (int *) malloc(sizeof(int)* n);
+	grafo->f = (int *) malloc(sizeof(int)* n);
+	grafo->pai = (int *) malloc(sizeof(int)* n);
+	grafo->cor = (int *) malloc(sizeof(int)* n);
 
 	return grafo;
 }
