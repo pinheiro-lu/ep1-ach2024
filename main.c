@@ -7,19 +7,70 @@
 
 typedef struct __adj__ {
 	struct __adj__ * prox;
-	char nomeVertice[NUM_CARACTERES_VERTICE];
+	int vertice;
 } Adj;
 
 typedef struct {
 	Adj * primeiro;
 } Lista;
 
-void insere(Lista ** adj, int vertice, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
-	Adj * aux = adj[vertice]->primeiro;
+typedef struct {
+	char ** nomeVertice;
+	Lista ** adj;
+	int numVertices;
+	int numArestas;
+} Grafo;
 
-	adj[vertice]->primeiro = (Adj *) malloc(sizeof(Adj));
-	adj[vertice]->primeiro->prox = aux;
-	strcpy(adj[vertice]->primeiro->nomeVertice, nomeVerticeAdjacente);
+Lista * inicializaLista() {
+	Lista * adj = (Lista *) malloc(sizeof(Lista));
+	adj->primeiro = NULL;
+
+	return adj;
+}
+
+int encontraVertice(Grafo * grafo, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
+	for (int i = 0 ; i < grafo->numVertices; i++) {
+		if (!strcmp(grafo->nomeVertice[i], nomeVerticeAdjacente)) {
+			return i;
+		}
+	}
+	return -1;
+}
+void insereLista(Grafo * grafo, int vertice, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
+	Adj * novo = (Adj *) malloc(sizeof(Adj));
+	novo->vertice = encontraVertice(grafo, nomeVerticeAdjacente);
+	novo->prox = grafo->adj[vertice]->primeiro;
+	grafo->adj[vertice]->primeiro = novo;
+	grafo->numArestas++;
+}
+
+void lerLinhaVertice (char linha[NUM_CARACTERES_LINHA], Grafo * grafo, int vertice) {
+	int offset, numCaracteresLidos;
+
+	grafo->nomeVertice[vertice] = (char *) malloc(sizeof(char) * NUM_CARACTERES_VERTICE);
+	grafo->adj[vertice] = inicializaLista();
+
+	sscanf(linha, "%[^:]:%n", grafo->nomeVertice[vertice], &numCaracteresLidos);
+
+	offset = numCaracteresLidos;
+		
+	char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE];
+
+	while(sscanf(linha + offset, " %[^;];%n", nomeVerticeAdjacente, &numCaracteresLidos) == 1) {
+		insereLista(grafo, vertice, nomeVerticeAdjacente);
+		offset += numCaracteresLidos;
+	}
+}
+
+Grafo * inicializaGrafo(int n) {
+	Grafo * grafo = (Grafo *) malloc(sizeof(Grafo));
+
+	grafo->nomeVertice = (char **) malloc(sizeof(char *) * n);
+	grafo->adj = (Lista **) malloc(sizeof(Lista *) * n);
+	grafo->numArestas = 0;
+	grafo->numVertices = n;
+
+	return grafo;
 }
 
 int main()
@@ -28,38 +79,14 @@ int main()
 
 	scanf("%d", &numVertices);
 
-	char ** nomeVertice = (char **) malloc(sizeof(char *) * numVertices);
-	Lista ** adj = (Lista **) malloc(sizeof(Lista *) * numVertices);
+	Grafo * grafo = inicializaGrafo(numVertices);
 
 	for (int i = 0; i < numVertices; i++) {
-		nomeVertice[i] = (char *) malloc(sizeof(char) * NUM_CARACTERES_VERTICE);
-		adj[i] = (Lista *) malloc(sizeof(Lista));
-		adj[i]->primeiro = NULL;
-
 		char linha[NUM_CARACTERES_LINHA];
 		
 		scanf("\n%[^\n]", linha);
 
-		int offset = 0, numCaracteresLidos;
-
-		sscanf(linha, "%[^:]:%n", nomeVertice[i], &numCaracteresLidos);
-
-		offset += numCaracteresLidos;
-		
-		char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE];
-
-		while(sscanf(linha + offset, " %[^;];%n", nomeVerticeAdjacente, &numCaracteresLidos) == 1) {
-			insere(adj, i, nomeVerticeAdjacente);
-			offset += numCaracteresLidos;
-		}
-
-		printf("%s: ", nomeVertice[i]);
-		Adj* aux = adj[i]->primeiro;
-		while (aux) {
-			printf("%s; ", aux->nomeVertice);
-			aux = aux->prox;
-		}
-		puts("");
+		lerLinhaVertice(linha, grafo, i);
 	}
 
 	int algoritmo;
