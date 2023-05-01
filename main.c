@@ -20,6 +20,9 @@ typedef struct {
 	Lista ** adj;
 	int numVertices;
 	int numArestas;
+	int cor [MAX_NUM_VERTICES];
+	int d[MAX_NUM_VERTICES], f[MAX_NUM_VERTICES];
+	int pai[MAX_NUM_VERTICES];
 } Grafo;
 
 Lista * inicializaLista() {
