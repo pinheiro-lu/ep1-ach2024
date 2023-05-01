@@ -118,16 +118,32 @@ void DFSvisit (Grafo * grafo, int u){
 	grafo->f[u] = contador;
 } 
 
-void DFS (Grafo * grafo, int v, int a){
+void DFS (Grafo * grafo, int v){
 	int contador = 0;
 	for (int u = 0; u< v; u++){
 		grafo->cor[u] = BRANCO;
 		grafo->pai[u] = -1;
+		grafo->f[u] = -1;
 	}
 	for (int i = 0; i< v; i++){
 		if (grafo->cor[i] == BRANCO)
 			DFSvisit(grafo, i);
 	}
+}
+
+Lista * ordenacaoTopologica (Grafo * grafo){
+	Lista * ordenada = (Lista *) malloc(sizeof(Lista));
+	for (int i = 0; i<grafo->V; i++)
+		DFS(grafo, i);
+	for (int j = 0; j<grafo->V; j++)
+		if (grafo->f[j] > 0){
+			Adj * novo = (Adj *) malloc(sizeof(Adj));
+			novo->vertice = j;
+			novo->nomeVerticeAdjacente = grafo->nomeVertice[j];
+			novo->prox = ordenada->primeiro;
+			ordenada->primeiro = novo;
+		}
+	return ordenada;	
 }
 
 int main()
