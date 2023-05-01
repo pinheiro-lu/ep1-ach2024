@@ -18,8 +18,8 @@ typedef struct {
 typedef struct {
 	char ** nomeVertice;
 	Lista ** adj;
-	int numVertices;
-	int numArestas;
+	int V;
+	int A;
 } Grafo;
 
 Lista * inicializaLista() {
@@ -30,7 +30,7 @@ Lista * inicializaLista() {
 }
 
 int encontraVertice(Grafo * grafo, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
-	for (int i = 0 ; i < grafo->numVertices; i++) {
+	for (int i = 0 ; i < grafo->V; i++) {
 		if (!strcmp(grafo->nomeVertice[i], nomeVerticeAdjacente)) {
 			return i;
 		}
@@ -44,7 +44,7 @@ void insereLista(Grafo * grafo, int vertice, char nomeVerticeAdjacente[NUM_CARAC
 	strcpy(novo->nomeVerticeAdjacente, nomeVerticeAdjacente);
 	novo->prox = grafo->adj[vertice]->primeiro;
 	grafo->adj[vertice]->primeiro = novo;
-	grafo->numArestas++;
+	grafo->A++;
 }
 
 void lerLinhaVertice (char linha[NUM_CARACTERES_LINHA], Grafo * grafo, int vertice) {
@@ -70,14 +70,14 @@ Grafo * inicializaGrafo(int n) {
 
 	grafo->nomeVertice = (char **) malloc(sizeof(char *) * n);
 	grafo->adj = (Lista **) malloc(sizeof(Lista *) * n);
-	grafo->numArestas = 0;
-	grafo->numVertices = n;
+	grafo->A = 0;
+	grafo->V = n;
 
 	return grafo;
 }
 
 void ajustaVerticesAdjacentes(Grafo * grafo) {
-	for (int i = 0; i < grafo->numVertices; i++) {
+	for (int i = 0; i < grafo->V; i++) {
 		Adj * aux = grafo->adj[i]->primeiro;
 
 		while (aux) {
