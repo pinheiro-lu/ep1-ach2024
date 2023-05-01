@@ -7,6 +7,7 @@
 
 typedef struct __adj__ {
 	struct __adj__ * prox;
+	char * nomeVerticeAdjacente;
 	int vertice;
 } Adj;
 
@@ -36,9 +37,11 @@ int encontraVertice(Grafo * grafo, char nomeVerticeAdjacente[NUM_CARACTERES_VERT
 	}
 	return -1;
 }
+
 void insereLista(Grafo * grafo, int vertice, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
 	Adj * novo = (Adj *) malloc(sizeof(Adj));
-	novo->vertice = encontraVertice(grafo, nomeVerticeAdjacente);
+	novo->nomeVerticeAdjacente = (char *) malloc(sizeof(char)* NUM_CARACTERES_VERTICE);
+	strcpy(novo->nomeVerticeAdjacente, nomeVerticeAdjacente);
 	novo->prox = grafo->adj[vertice]->primeiro;
 	grafo->adj[vertice]->primeiro = novo;
 	grafo->numArestas++;
@@ -73,6 +76,18 @@ Grafo * inicializaGrafo(int n) {
 	return grafo;
 }
 
+void ajustaVerticesAdjacentes(Grafo * grafo) {
+	for (int i = 0; i < grafo->numVertices; i++) {
+		Adj * aux = grafo->adj[i]->primeiro;
+
+		while (aux) {
+			aux->vertice = encontraVertice(grafo, aux->nomeVerticeAdjacente);
+			aux = aux->prox;
+		}
+
+	}
+}
+
 int main()
 {
 	int numVertices;
@@ -88,6 +103,8 @@ int main()
 
 		lerLinhaVertice(linha, grafo, i);
 	}
+
+	ajustaVerticesAdjacentes(grafo);
 
 	int algoritmo;
 	scanf("%d", &algoritmo);
