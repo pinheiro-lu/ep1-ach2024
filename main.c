@@ -4,6 +4,7 @@
 
 #define NUM_CARACTERES_LINHA 1000
 #define NUM_CARACTERES_VERTICE NUM_CARACTERES_LINHA
+#define MAX_NUM_VERTICES 1000
 
 typedef struct __adj__ {
 	struct __adj__ * prox;
@@ -20,9 +21,9 @@ typedef struct {
 	Lista ** adj;
 	int numVertices;
 	int numArestas;
-	int cor [numVertices];
-	int d[numVertices], f[numVertices];
-	int pai[numVertices];
+	int cor [MAX_NUM_VERTICES];
+	int d[MAX_NUM_VERTICES], f[MAX_NUM_VERTICES];
+	int pai[MAX_NUM_VERTICES];
 } Grafo;
 
 Lista * inicializaLista() {
