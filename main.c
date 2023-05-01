@@ -96,6 +96,36 @@ void ajustaVerticesAdjacentes(Grafo * grafo) {
 	}
 }
 
+void DFSvisit (Grafo * grafo, int u){
+	int contador = 0;
+	grafo->cor[u] = CINZA;
+	contador += contador;
+	grafo->d[u] = contador;
+	for (int v = 0; v< grafo->numVertices; v++){
+		while (grafo->adj[u]->primeiro->vertice != v)
+			grafo->adj[u]->primeiro = grafo->adj[u]->primeiro->prox;
+				if (grafo->cor[v] == BRANCO){
+					grafo->pai[v] = u;
+					DFSvisit (grafo, v);
+		}	
+			    }
+	grafo->cor[u] = PRETO;
+	contador += contador;
+	grafo->f[u] = contador;
+} 
+
+void DFS (Grafo * grafo, int v, int a){
+	int contador = 0;
+	for (int u = 0; u< v; u++){
+		grafo->cor[u] = BRANCO;
+		grafo->pai[u] = -1;
+	}
+	for (int i = 0; i< v; i++){
+		if (grafo->cor[i] == BRANCO)
+			DFSvisit(grafo, i);
+	}
+}
+
 int main()
 {
 	int numVertices;
