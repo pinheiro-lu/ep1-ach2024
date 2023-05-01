@@ -4,6 +4,15 @@
 
 #define NUM_CARACTERES_LINHA 1000
 #define NUM_CARACTERES_VERTICE NUM_CARACTERES_LINHA
+#define MAX_NUM_VERTICES 1000
+#define BRANCO 1
+#define CINZA 2
+#define PRETO 3
+
+int cor [MAX_NUM_VERTICES];
+int d[MAX_NUM_VERTICES], f[MAX_NUM_VERTICES];
+int pai[MAX_NUM_VERTICES];
+int isAdjacente[MAX_NUM_VERTICES];
 
 typedef struct __adj__ {
 	struct __adj__ * prox;
@@ -22,6 +31,24 @@ void insere(Lista ** adj, int vertice, char nomeVerticeAdjacente[NUM_CARACTERES_
 	strcpy(adj[vertice]->primeiro->nomeVertice, nomeVerticeAdjacente);
 }
 
+void DFSvisit (Lista ** adj, int u, int numVertices){
+	int contador = 0;
+	cor[u] = CINZA;
+	contador += contador;
+	d[u] = contador;
+	for (int v = 0; v< numVertices; v++){
+		if (isAdjacente[u][v] == 1)
+			if (cor[v] == BRANCO){
+				pai[v] = u;
+				DFSvisit (adj, v, numVertices);
+		}	
+	}
+	cor[u] = PRETO;
+	contador += contador;
+	f[u] = contador;
+} 
+
+
 int main()
 {
 	int numVertices;
@@ -30,7 +57,7 @@ int main()
 
 	char ** nomeVertice = (char **) malloc(sizeof(char *) * numVertices);
 	Lista ** adj = (Lista **) malloc(sizeof(Lista *) * numVertices);
-
+	
 	for (int i = 0; i < numVertices; i++) {
 		nomeVertice[i] = (char *) malloc(sizeof(char) * NUM_CARACTERES_VERTICE);
 		adj[i] = (Lista *) malloc(sizeof(Lista));
@@ -50,6 +77,9 @@ int main()
 
 		while(sscanf(linha + offset, " %[^;];%n", nomeVerticeAdjacente, &numCaracteresLidos) == 1) {
 			insere(adj, i, nomeVerticeAdjacente);
+			for (int x = 0; x<numVertices; x++)
+				if (strcmp(nomeVerticeAdjacente, nomeVertice[x]) == 0)
+					isAdjacente[i][x] = 1;
 			offset += numCaracteresLidos;
 		}
 
