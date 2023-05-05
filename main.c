@@ -203,11 +203,7 @@ int contaArvores(Grafo * grafo) {
 	return soma;
 }
 
-Grafo * SCCs1(Grafo * grafo) {
-	DFS(grafo, tranposicaoArestas(grafo));
-	ordenacaoTopologica(grafo);
-	DFS(grafo, grafo->adj);
-
+Grafo * kosaraju (Grafo * grafo){
 	Grafo * sccs = inicializaGrafo(contaArvores(grafo));
 
 	for (int i = 0; i < sccs->V; i++) {
@@ -236,20 +232,57 @@ Grafo * SCCs1(Grafo * grafo) {
 			while (aux){
 				int j = aux->vertice;
 				if (grafo->pai[i] != grafo->pai[j]){
-					int seila = localVertices[grafo->pai[i]];
-					int seila2 = localVertices[grafo->pai[j]];
-					insereListaTransposta(sccs->adj[localVertices[grafo->pai[i]]], localVertices[grafo->pai[j]], sccs->nomeVertice[localVertices[grafo->pai[j]]]);
-			}
+					for (Adj * auxiliar = sccs->adj[localVertices[grafo->pai[i]]]->primeiro; auxiliar; auxiliar = auxiliar->prox){
+						if (auxiliar->vertice == localVertices[grafo->pai[j]]) //condição de dois iguais
+							goto oi;
+					}
+					insereListaTransposta(sccs->adj[localVertices[grafo->pai[i]]], localVertices[grafo->pai[j]], sccs->nomeVertice[localVertices[grafo->pai[j]]]);		
+				}
+			oi:
 			aux = aux->prox;
 		}
 	}
 
-
+	DFS(sccs, sccs->adj);
 	ordenacaoTopologica(sccs);
 
 
 	return sccs;
 
+}
+Grafo * SCCs1(Grafo * grafo) {
+	DFS(grafo, tranposicaoArestas(grafo));
+	ordenacaoTopologica(grafo);
+	DFS(grafo, grafo->adj);
+
+	return kosaraju (grafo);
+}
+
+Grafo * SCCs2 (Grafo * grafo){
+	DFS(grafo, grafo->adj);
+	ordenacaoTopologica(grafo);
+	DFS(grafo, tranposicaoArestas(grafo));
+	
+	return kosaraju(grafo);
+
+}
+
+
+
+void imprimeSaida (Grafo * sccs){
+	printf (sccs->V == 1 ? "\nSim\n" : "\nNão\n");
+	printf ("%d\n", sccs->V);
+	for (int i = 0; i < sccs->V; i++) {
+		printf("%s ", sccs->nomeVertice[i]);
+	}
+	puts("");
+	for (int i = 0; i <sccs->V; i++){
+		printf ("%s: ", sccs->nomeVertice[i]);
+		for (Adj * aux = sccs->adj[i]->primeiro; aux; aux = aux->prox){
+			printf ("%s; ", aux->nomeVerticeAdjacente);
+		}
+	printf ("\n");
+	}
 }
 
 int main()
@@ -273,12 +306,9 @@ int main()
 	int algoritmo;
 	scanf("%d", &algoritmo);
 
-	Grafo * sccs = SCCs1(grafo);
+	Grafo * sccs = (algoritmo == 1 ? SCCs1(grafo) : SCCs2(grafo));
 
-	for (int i = 0; i < sccs->V; i++) {
-		printf("%s ", sccs->nomeVertice[i]);
-	}
-	puts("");
+	imprimeSaida(sccs);
 
     return 0;
 }
