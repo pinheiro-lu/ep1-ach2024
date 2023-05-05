@@ -212,6 +212,7 @@ Grafo * SCCs1(Grafo * grafo) {
 
 	for (int i = 0; i < sccs->V; i++) {
 		sccs->nomeVertice[i] = (char *) malloc(sizeof(char) * NUM_CARACTERES_VERTICE);
+		sccs->adj[i] = inicializaLista();
 	}
 
 	int * localVertices = (int *) malloc(sizeof(int) * grafo->V);
@@ -228,6 +229,24 @@ Grafo * SCCs1(Grafo * grafo) {
 		}
 		strcat(sccs->nomeVertice[localVertices[grafo->pai[i]]], grafo->nomeVertice[i]);
 	}
+
+
+	for (int i = 0; i <grafo->V; i++){
+		Adj * aux = grafo->adj[i]->primeiro;
+			while (aux){
+				int j = aux->vertice;
+				if (grafo->pai[i] != grafo->pai[j]){
+					int seila = localVertices[grafo->pai[i]];
+					int seila2 = localVertices[grafo->pai[j]];
+					insereListaTransposta(sccs->adj[localVertices[grafo->pai[i]]], localVertices[grafo->pai[j]], sccs->nomeVertice[localVertices[grafo->pai[j]]]);
+			}
+			aux = aux->prox;
+		}
+	}
+
+
+	ordenacaoTopologica(sccs);
+
 
 	return sccs;
 
