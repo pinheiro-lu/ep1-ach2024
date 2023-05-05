@@ -5,9 +5,14 @@
 #define NUM_CARACTERES_LINHA 1000
 #define NUM_CARACTERES_VERTICE NUM_CARACTERES_LINHA
 
-#define BRANCO 1
-#define CINZA 2
-#define PRETO 3
+#define BRANCO 0
+#define CINZA 1
+#define PRETO 2
+
+typedef struct {
+	int f;
+	int indice;
+} Pair;
 
 typedef struct __adj__ {
 	struct __adj__ * prox;
@@ -46,13 +51,12 @@ int encontraVertice(Grafo * grafo, char nomeVerticeAdjacente[NUM_CARACTERES_VERT
 	return -1;
 }
 
-void insereLista(Grafo * grafo, int vertice, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
+void insereLista(Lista * adj, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
 	Adj * novo = (Adj *) malloc(sizeof(Adj));
 	novo->nomeVerticeAdjacente = (char *) malloc(sizeof(char)* NUM_CARACTERES_VERTICE);
 	strcpy(novo->nomeVerticeAdjacente, nomeVerticeAdjacente);
-	novo->prox = grafo->adj[vertice]->primeiro;
-	grafo->adj[vertice]->primeiro = novo;
-	grafo->A++;
+	novo->prox = adj->primeiro;
+	adj->primeiro = novo;
 }
 
 void lerLinhaVertice (char linha[NUM_CARACTERES_LINHA], Grafo * grafo, int vertice) {
@@ -68,7 +72,8 @@ void lerLinhaVertice (char linha[NUM_CARACTERES_LINHA], Grafo * grafo, int verti
 	char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE];
 
 	while(sscanf(linha + offset, " %[^;];%n", nomeVerticeAdjacente, &numCaracteresLidos) == 1) {
-		insereLista(grafo, vertice, nomeVerticeAdjacente);
+		insereLista(grafo->adj[vertice], nomeVerticeAdjacente);
+		grafo->A++;
 		offset += numCaracteresLidos;
 	}
 }
@@ -100,50 +105,132 @@ void ajustaVerticesAdjacentes(Grafo * grafo) {
 	}
 }
 
-void DFSvisit (Grafo * grafo, int u){
-	int contador = 0;
-	grafo->cor[u] = CINZA;
-	contador += contador;
-	grafo->d[u] = contador;
-	for (int v = 0; v< grafo->V; v++){
-		while (grafo->adj[u]->primeiro->vertice != v)
-			grafo->adj[u]->primeiro = grafo->adj[u]->primeiro->prox;
-				if (grafo->cor[v] == BRANCO){
-					grafo->pai[v] = u;
-					DFSvisit (grafo, v);
-		}	
-			    }
-	grafo->cor[u] = PRETO;
-	contador += contador;
-	grafo->f[u] = contador;
-} 
+int time;
 
-void DFS (Grafo * grafo, int v){
-	int contador = 0;
-	for (int u = 0; u< v; u++){
-		grafo->cor[u] = BRANCO;
-		grafo->pai[u] = -1;
-		grafo->f[u] = -1;
+void DFSvisit (Grafo * grafo, Lista ** adj, int u, int pai){
+	grafo->cor[u] = CINZA;
+	time++;
+	grafo->d[u] = time;
+
+	Adj * aux = adj[u]->primeiro;
+	while (aux) {
+		if(grafo->cor[aux->vertice] == BRANCO) {
+			grafo->pai[aux->vertice] = pai;
+			DFSvisit(grafo, adj, aux->vertice, pai);
+		}
+		aux = aux->prox;
 	}
-	for (int i = 0; i< v; i++){
-		if (grafo->cor[i] == BRANCO)
-			DFSvisit(grafo, i);
+	grafo->cor[u] = PRETO;
+	time++;
+	grafo->f[u] = time;
+}
+
+void DFS (Grafo * grafo, Lista ** adj){
+	for (int u = 0; u < grafo->V; u++){
+		grafo->cor[u] = BRANCO;
+		grafo->pai[u] = u;
+	}
+	time = 0;
+	for (int u = 0; u < grafo->V; u++){
+		if (grafo->cor[u] == BRANCO)
+			DFSvisit(grafo, adj, u, u);
 	}
 }
 
-Lista * ordenacaoTopologica (Grafo * grafo){
-	Lista * ordenada = (Lista *) malloc(sizeof(Lista));
-	for (int i = 0; i<grafo->V; i++)
-		DFS(grafo, i);
-	for (int j = 0; j<grafo->V; j++)
-		if (grafo->f[j] > 0){
-			Adj * novo = (Adj *) malloc(sizeof(Adj));
-			novo->vertice = j;
-			novo->nomeVerticeAdjacente = grafo->nomeVertice[j];
-			novo->prox = ordenada->primeiro;
-			ordenada->primeiro = novo;
+int compare(const void *l, const void *r) {
+	return (((Pair*)r)->f - ((Pair *)l)->f);
+}
+
+void ordenacaoTopologica (Grafo * grafo){
+	Pair * pair = (Pair *) malloc(sizeof(Pair) * grafo->V);
+
+	for (int i = 0; i < grafo->V; i++) {
+		pair[i].f = grafo->f[i];
+		pair[i].indice = i;
+	}
+	qsort(pair, grafo->V, sizeof(Pair), compare);
+
+	Grafo * novo = inicializaGrafo(grafo->V);
+
+	for (int i = 0; i < grafo->V; i++) {
+		novo->adj[i] = grafo->adj[pair[i].indice];
+		novo->cor[i] = grafo->cor[pair[i].indice];
+		novo->d[i] = grafo->d[pair[i].indice];
+		novo->f[i] = grafo->f[pair[i].indice];
+		novo->pai[i] = grafo->pai[pair[i].indice];
+		novo->nomeVertice[i] = (char *) malloc(sizeof(char) * NUM_CARACTERES_VERTICE);
+		strcpy(novo->nomeVertice[i], grafo->nomeVertice[pair[i].indice]);
+	}
+
+	novo->A = grafo->A;
+	novo->V = grafo->V;
+
+	ajustaVerticesAdjacentes(novo);
+
+	*grafo = *novo;
+}
+
+void insereListaTransposta(Lista * listaArestas, int indiceAdjacente, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
+	insereLista(listaArestas, nomeVerticeAdjacente);
+	
+	listaArestas->primeiro->vertice = indiceAdjacente;
+}
+
+Lista ** tranposicaoArestas(Grafo * grafo) {
+	Lista ** arestasTranspostas = (Lista **) malloc(sizeof(Lista *) * grafo->V);
+
+	for (int i = 0; i < grafo->V; i++) {
+		arestasTranspostas[i] = (Lista *) malloc(sizeof(Lista));
+	}
+
+	for (int i = 0; i < grafo->V; i++) {	
+		Adj * aux = grafo->adj[i]->primeiro;
+		while (aux) {
+			insereListaTransposta(arestasTranspostas[aux->vertice], i, grafo->nomeVertice[i]);
+			aux = aux->prox;
 		}
-	return ordenada;	
+	}
+
+	return arestasTranspostas;
+}
+
+int contaArvores(Grafo * grafo) {
+	int soma = 0;
+	for (int i = 0; i < grafo->V; i++) {
+		if(grafo->pai[i] == i) soma++;
+	}
+
+	return soma;
+}
+
+Grafo * SCCs1(Grafo * grafo) {
+	DFS(grafo, tranposicaoArestas(grafo));
+	ordenacaoTopologica(grafo);
+	DFS(grafo, grafo->adj);
+
+	Grafo * sccs = inicializaGrafo(contaArvores(grafo));
+
+	for (int i = 0; i < sccs->V; i++) {
+		sccs->nomeVertice[i] = (char *) malloc(sizeof(char) * NUM_CARACTERES_VERTICE);
+	}
+
+	int * localVertices = (int *) malloc(sizeof(int) * grafo->V);
+
+	for (int i = 0; i < grafo->V; i++) {
+		localVertices[i] = -1;
+	}
+
+	int livre = 0;
+
+	for (int i = 0; i < grafo->V; i++) {
+		if (localVertices[grafo->pai[i]] == -1) {
+			localVertices[grafo->pai[i]] = livre++;
+		}
+		strcat(sccs->nomeVertice[localVertices[grafo->pai[i]]], grafo->nomeVertice[i]);
+	}
+
+	return sccs;
+
 }
 
 int main()
@@ -166,6 +253,13 @@ int main()
 
 	int algoritmo;
 	scanf("%d", &algoritmo);
+
+	Grafo * sccs = SCCs1(grafo);
+
+	for (int i = 0; i < sccs->V; i++) {
+		printf("%s ", sccs->nomeVertice[i]);
+	}
+	puts("");
 
     return 0;
 }
