@@ -7,6 +7,11 @@
 
 #include "ordenacao.h"
 
+typedef struct {
+	int f;
+	int indice;
+} Pair;
+
 int compare(const void *l, const void *r) {
 	return (((Pair*)r)->f - ((Pair *)l)->f);
 }

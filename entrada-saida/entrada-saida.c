@@ -27,7 +27,7 @@ void lerLinhaVertice (char linha[NUM_CARACTERES_LINHA], Grafo * grafo, int verti
 }
 
 void imprimeSaida (Grafo * sccs){
-	printf (sccs->V == 1 ? "\nSim\n" : "\nNão\n");
+	puts (sccs->V == 1 ? "Sim" : "Não");
 	printf ("%d\n", sccs->V);
 	for (int i = 0; i < sccs->V; i++) {
 		printf("%s ", sccs->nomeVertice[i]);
@@ -38,6 +38,6 @@ void imprimeSaida (Grafo * sccs){
 		for (Adj * aux = sccs->adj[i]->primeiro; aux; aux = aux->prox){
 			printf ("%s; ", aux->nomeVerticeAdjacente);
 		}
-	printf ("\n");
+		puts("");
 	}
 }

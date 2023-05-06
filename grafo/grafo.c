@@ -3,6 +3,7 @@
 
 #include "../estruturas.h"
 #include "../lista/lista.h"
+#include "../hash/hash.h"
 
 #include "grafo.h"
 
@@ -17,20 +18,20 @@ Grafo * inicializaGrafo(int n) {
 	grafo->f = (int *) malloc(sizeof(int)* n);
 	grafo->pai = (int *) malloc(sizeof(int)* n);
 	grafo->cor = (int *) malloc(sizeof(int)* n);
+	grafo->elemento = (ElementoHash *) malloc(sizeof(ElementoHash)*n);
 
 	return grafo;
 }
 
 int encontraVertice(Grafo * grafo, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
-	for (int i = 0 ; i < grafo->V; i++) {
-		if (!strcmp(grafo->nomeVertice[i], nomeVerticeAdjacente)) {
-			return i;
-		}
-	}
-	return -1;
+	return buscaHash(grafo, nomeVerticeAdjacente);
 }
 
 void ajustaVerticesAdjacentes(Grafo * grafo) {
+	for (int i = 0; i < grafo->V; i++) {
+		insereHash(grafo, grafo->nomeVertice[i], i);
+	}
+
 	for (int i = 0; i < grafo->V; i++) {
 		Adj * aux = grafo->adj[i]->primeiro;
 
