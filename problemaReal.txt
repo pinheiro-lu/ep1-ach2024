@@ -1,0 +1,39 @@
+37
+@usponline: @cienciausp; @ieausp;
+@cienciausp: @usponline;
+@ieausp: @AgenciaFAPESP; @IEARP;
+@AgenciaFAPESP: @unicampoficial; @usponline;
+@IEARP: @usponline; @usprp;
+@unicampoficial: @AgendaUnicamp; @AgenciaFAPESP;
+@usprp: @cbnribeirao;
+@AgendaUnicamp: @unicampoficial; @idea_unicamp;
+@cbnribeirao: @BotafogoSP;
+@idea_unicamp: @unicampoficial;
+@BotafogoSP: @SantosFC;
+@SantosFC: @SereiasDaVila;
+@SereiasDaVila: @BRFeminino; @SantosFC;
+@BRFeminino: @guerreirasgrena; @Flamengo;
+@guerreirasgrena: @BRFeminino;
+@Flamengo: @TimeFlamengo; @Flamengo_en;
+@TimeFlamengo: @Flamengo_en;
+@Flamengo_en: @TheLibertadores;
+@TheLibertadores: @bwin_UK; @Flamengo_en;
+@bwin_UK: @TheSkyBlueHub;
+@TheSkyBlueHub: @AllThingSkyBlue;
+@AllThingSkyBlue: @Coventry_City; @TheSkyBlueHub;
+@Coventry_City: @SkyBetChamp; @CBSArena;
+@SkyBetChamp: @CazooUK; @BurnleyOfficial;
+@CBSArena: @Coventry_City; @the_LTA;
+@CazooUK: @ParmBHF;
+@BurnleyOfficial: @BurnleyFCWomen; @SkyBetChamp;
+@the_LTA: @BJKCup;
+@ParmBHF: @CazooUK;
+@BurnleyFCWomen: @BurnleyOfficial; @FAWNL;
+@BJKCup: @ITFTennis; @usta;
+@FAWNL: @NFFCWomen; @FAWNLchair;
+@ITFTennis: @DavisCup;
+@usta:
+@NFFCWomen: 
+@FAWNLchair:
+@DavisCup:
+1
