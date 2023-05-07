@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include "../estruturas.h"
+#include "../lista/lista.h"
 #include "../grafo/grafo.h"
 
 #include "aleatorio.h"

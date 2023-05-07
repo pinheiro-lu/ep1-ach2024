@@ -45,11 +45,7 @@ void ajustaVerticesAdjacentes(Grafo * grafo) {
 	}
 }
 
-void insereLista(Lista * listaArestas, int indiceAdjacente, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
-	insereNomeLista(listaArestas, nomeVerticeAdjacente);
-	
-	listaArestas->primeiro->vertice = indiceAdjacente;
-}
+
 
 Lista ** tranposicaoArestas(Grafo * grafo) {
 	Lista ** arestasTranspostas = (Lista **) malloc(sizeof(Lista *) * grafo->V);
