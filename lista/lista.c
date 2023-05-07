@@ -13,7 +13,7 @@ Lista * inicializaLista() {
 	return adj;
 }
 
-void insereLista(Lista * adj, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
+void insereNomeLista(Lista * adj, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
 	Adj * novo = (Adj *) malloc(sizeof(Adj));
 	novo->nomeVerticeAdjacente = (char *) malloc(sizeof(char)* NUM_CARACTERES_VERTICE);
 	strcpy(novo->nomeVerticeAdjacente, nomeVerticeAdjacente);

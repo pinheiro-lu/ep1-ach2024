@@ -22,7 +22,7 @@ void lerLinhaVertice (char linha[NUM_CARACTERES_LINHA], Grafo * grafo, int verti
 	char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE];
 
 	while(sscanf(linha + offset, " %[^;];%n", nomeVerticeAdjacente, &numCaracteresLidos) == 1) {
-		insereLista(grafo->adj[vertice], nomeVerticeAdjacente);
+		insereNomeLista(grafo->adj[vertice], nomeVerticeAdjacente);
 		grafo->A++;
 		offset += numCaracteresLidos;
 	}

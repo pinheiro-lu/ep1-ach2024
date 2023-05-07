@@ -45,8 +45,8 @@ void ajustaVerticesAdjacentes(Grafo * grafo) {
 	}
 }
 
-void insereListaTransposta(Lista * listaArestas, int indiceAdjacente, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
-	insereLista(listaArestas, nomeVerticeAdjacente);
+void insereLista(Lista * listaArestas, int indiceAdjacente, char nomeVerticeAdjacente[NUM_CARACTERES_VERTICE]) {
+	insereNomeLista(listaArestas, nomeVerticeAdjacente);
 	
 	listaArestas->primeiro->vertice = indiceAdjacente;
 }
@@ -61,7 +61,7 @@ Lista ** tranposicaoArestas(Grafo * grafo) {
 	for (int i = 0; i < grafo->V; i++) {	
 		Adj * aux = grafo->adj[i]->primeiro;
 		while (aux) {
-			insereListaTransposta(arestasTranspostas[aux->vertice], i, grafo->nomeVertice[i]);
+			insereLista(arestasTranspostas[aux->vertice], i, grafo->nomeVertice[i]);
 			aux = aux->prox;
 		}
 	}

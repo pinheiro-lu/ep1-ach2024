@@ -44,7 +44,7 @@ Grafo * kosaraju (Grafo * grafo){
 						if (auxiliar->vertice == localVertices[grafo->pai[j]]) //condição de dois iguais
 							goto oi;
 					}
-					insereListaTransposta(sccs->adj[localVertices[grafo->pai[i]]], localVertices[grafo->pai[j]], sccs->nomeVertice[localVertices[grafo->pai[j]]]);		
+					insereLista(sccs->adj[localVertices[grafo->pai[i]]], localVertices[grafo->pai[j]], sccs->nomeVertice[localVertices[grafo->pai[j]]]);		
 				}
 			oi:
 			aux = aux->prox;
