@@ -6,14 +6,14 @@
 
 IDIR =./include 
 CC=gcc
-CFLAGS=-I$(IDIR) 
+CFLAGS=-I$(IDIR) -g
 
 ODIR=.
 
 LIBS=
 
-SOURCES = main.c dfs/dfs.c entrada-saida/entrada-saida.c grafo/grafo.c kosaraju/kosaraju.c lista/lista.c ordenacao/ordenacao.c hash/hash.c
-_OBJ = main.o grafo.o dfs.o entrada-saida.o kosaraju.o lista.o ordenacao.o hash.o
+SOURCES = main.c dfs/dfs.c entrada-saida/entrada-saida.c grafo/grafo.c kosaraju/kosaraju.c lista/lista.c ordenacao/ordenacao.c hash/hash.c aleatorio/aleatorio.c
+_OBJ = main.o grafo.o dfs.o entrada-saida.o kosaraju.o lista.o ordenacao.o hash.o aleatorio.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 main: $(OBJ)
@@ -23,6 +23,9 @@ $(ODIR)/%.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 dfs.o: dfs/dfs.c
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+aleatorio.o: aleatorio/aleatorio.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 hash.o: hash/hash.c

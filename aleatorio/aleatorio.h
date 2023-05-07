@@ -1,0 +1,1 @@
+Grafo * grafoAleatorio (int V, int A);
