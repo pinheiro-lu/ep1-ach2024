@@ -4,6 +4,8 @@
 
 #include "dfs.h"
 
+// Funções adaptadas do material disponibilizado para as aulas de AED II
+
 #define BRANCO 0
 #define CINZA 1
 #define PRETO 2

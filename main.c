@@ -10,6 +10,7 @@
 
 #include "ordenacao/ordenacao.h"
 
+// Função criada pelo grupo
 int main()
 {
 	int numVertices;

@@ -7,6 +7,8 @@
 
 #include "entrada-saida.h"
 
+// Funções criadas pelo grupo
+
 void lerLinhaVertice (char linha[NUM_CARACTERES_LINHA], Grafo * grafo, int vertice) {
 	int offset, numCaracteresLidos;
 

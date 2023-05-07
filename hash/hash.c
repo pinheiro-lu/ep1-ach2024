@@ -11,6 +11,8 @@
 
 #include "hash.h"
 
+// Funções adaptadas do material de IAA de 2022 ministrada pelo Prof. Dr. Marcos Lordello Chaim
+
 int hash(Grafo * grafo, char chave[NUM_CARACTERES_VERTICE]) {
 int somaValCar = 0;
   int i;

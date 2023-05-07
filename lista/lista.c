@@ -4,6 +4,8 @@
 #include "../estruturas.h"
 #include "lista.h"
 
+// Funções criadas pelo grupo
+
 Lista * inicializaLista() {
 	Lista * adj = (Lista *) malloc(sizeof(Lista));
 	adj->primeiro = NULL;

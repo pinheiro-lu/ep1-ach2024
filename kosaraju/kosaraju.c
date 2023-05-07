@@ -9,6 +9,8 @@
 
 #include "kosaraju.h"
 
+// Funções criadas pelo grupo. Lógica adaptada do material de AED II
+
 Grafo * kosaraju (Grafo * grafo){
 	Grafo * sccs = inicializaGrafo(contaArvores(grafo));
 

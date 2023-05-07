@@ -7,6 +7,8 @@
 
 #include "ordenacao.h"
 
+// Funções criadas pelo grupo. Lógica adaptada do material de AED II
+
 typedef struct {
 	int f;
 	int indice;

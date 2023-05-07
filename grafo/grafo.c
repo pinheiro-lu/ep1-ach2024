@@ -7,6 +7,8 @@
 
 #include "grafo.h"
 
+// Funções criadas pelo grupo
+
 Grafo * inicializaGrafo(int n) {
 	Grafo * grafo = (Grafo *) malloc(sizeof(Grafo));
 
