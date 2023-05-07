@@ -7,6 +7,7 @@
 
 #include "aleatorio.h"
 
+// Função inspirada no "Outro construtor de grafos aleatórios" de https://www.ime.usp.br/~pf/algoritmos_para_grafos/aulas/random.html
 Grafo * grafoAleatorio (int V, int A)
 {
   double prob = (double) A / (V * (V - 1));
