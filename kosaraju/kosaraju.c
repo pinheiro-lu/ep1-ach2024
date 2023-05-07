@@ -31,7 +31,7 @@ Grafo * kosaraju (Grafo * grafo){
 		if (localVertices[grafo->pai[i]] == -1) {
 			localVertices[grafo->pai[i]] = livre++;
 		}
-		strcat(sccs->nomeVertice[localVertices[grafo->pai[i]]], grafo->nomeVertice[i]);
+		strncat(sccs->nomeVertice[localVertices[grafo->pai[i]]], grafo->nomeVertice[i], NUM_CARACTERES_VERTICE);
 	}
 
 
